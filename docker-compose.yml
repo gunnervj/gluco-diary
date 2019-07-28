@@ -27,7 +27,7 @@ services:
     container_name: userdb
     environment: 
       SPRING_PROFILES_ACTIVE: prod
-      MONGODB_DATABASE: userdb
+      MONGODB_DATABASE: user-db
       MONGODB_USERNAME: ${USERDB_USER}
       MONGODB_PASSWORD: ${USERDB_PASS}
     restart: always
