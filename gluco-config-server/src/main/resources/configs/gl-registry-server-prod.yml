@@ -3,4 +3,4 @@ eureka:
     registerWithEureka: false
     fetchRegistry: false
     serviceUrl:
-      defaultZone: http://localhost:7777/eureka
+      defaultZone: http://glregistryserver:7777/eureka

@@ -1,0 +1,197 @@
+version: '2.3'
+
+services:
+  glucodb:
+    image: 'bitnami/mongodb:latest'
+    container_name: glucodb
+    environment: 
+      SPRING_PROFILES_ACTIVE: prod
+      MONGODB_DATABASE: gluco-db
+      MONGODB_USERNAME: ${USERDB_USER}
+      MONGODB_PASSWORD: ${USERDB_PASS}
+    restart: always
+    expose:
+      - 27017
+    ports:
+      - 27017:27017
+    volumes: 
+      - ./data/db:/data/db
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+    networks: 
+      gluconetwork:
+        aliases:
+          - glucodb.gl.com
+  userdb:
+    image: 'bitnami/mongodb:latest'
+    container_name: userdb
+    environment: 
+      SPRING_PROFILES_ACTIVE: prod
+      MONGODB_DATABASE: userdb
+      MONGODB_PORT_NUMBER: 27020
+      MONGODB_USERNAME: ${USERDB_USER}
+      MONGODB_PASSWORD: ${USERDB_PASS}
+    restart: always
+    expose:
+      - 27020
+    ports:
+      - 27020:27020
+    volumes: 
+      - ./data/db/user:/data/db/user
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+    networks: 
+      gluconetwork:
+        aliases:
+          - userdb.gl.com     
+          
+          
+  glconfigserver:
+    container_name: glconfigserver
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      CONFIG_SERVICE_PASSWORD: ${CONFIG_SERVICE_PASSWORD}
+      DP_STORE_PASSWORD: ${GL_KEY_PASSWORD}
+      DP_SK_PASSWORD: ${GL_KEY_PASSWORD}
+    build: ./gluco-config-server
+    image: ${IMAGE_REG_LOC}/gluco-config-server
+    restart: always
+    depends_on:
+      sqmongodb:
+        condition: service_started
+    ports:
+      - 8888:8888
+    expose:
+      - 8888
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+    networks:
+      gluconetwork:
+        aliases:
+          - config-server.gl.com
+          
+  glregistryserver:
+    container_name: glregistryserver
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      CONFIG_SERVICE_PASSWORD: ${CONFIG_SERVICE_PASSWORD}
+    build: ./gluco-registry-server
+    image: ${IMAGE_REG_LOC}/gluco-registry-server
+    restart: always
+    expose:
+      - 7777
+    ports:
+      - 7777:7777
+    links:
+      - sqconfigserver
+    depends_on:
+      sqconfigserver:
+        condition: service_healthy
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+    networks:
+      gluconetwork:
+        aliases:
+          - registry-server.gl.com   
+  gateway: 
+    container_name: gateway
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      CONFIG_SERVICE_PASSWORD: ${CONFIG_SERVICE_PASSWORD}
+    build: ./gluco-gateway
+    image: ${IMAGE_REG_LOC}/gluco-gateway
+    restart: always
+    ports:
+      - 8080:8080
+    links:
+      - glconfigserver
+      - glregistryserver
+    restart: always
+    depends_on:
+      glconfigserver:
+        condition: service_healthy
+      glregistryserver:
+        condition: service_healthy
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+    networks: 
+      gluconetwork:
+        aliases:
+          - gateway-service.gl.com           
+  gluserservice: 
+    container_name: gluserservice
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      CONFIG_SERVICE_PASSWORD: ${CONFIG_SERVICE_PASSWORD}
+    build: ./user-service
+    image: ${IMAGE_REG_LOC}/user-service
+    restart: always
+    ports:
+      - 8081:8081
+    expose:
+      - 8081      
+    links:
+      - glconfigserver
+      - userdb
+      - glregistryserver
+    depends_on:
+      glconfigserver:
+        condition: service_healthy
+      glregistryserver:
+        condition: service_healthy
+      userdb:
+        condition: service_started
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+    networks: 
+      gluconetwork:
+        aliases:
+          - user-service.gl.com
+
+  blook-gluco-service: 
+    container_name: blood-sugar-service
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      CONFIG_SERVICE_PASSWORD: ${CONFIG_SERVICE_PASSWORD}
+    build: ./blood-sugar-service
+    image: ${IMAGE_REG_LOC}/blood-sugar-service
+    restart: always
+    ports:
+      - 8080:8080
+    links:
+      - glconfigserver
+      - glregistryserver
+      - glucodb
+    restart: always
+    depends_on:
+      glconfigserver:
+        condition: service_healthy
+      glregistryserver:
+        condition: service_healthy
+      glucodb:
+        condition: service_started 
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+    networks: 
+      gluconetwork:
+        aliases:
+          - blood-sugar-service.gl.com
+
+networks: 
+  gluconetwork: 
+    driver: bridge
+    
