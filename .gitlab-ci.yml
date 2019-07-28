@@ -26,7 +26,7 @@ docker-build-push:
   tags:
     - dev
   before_script:
-      - sudo apt install python3-pip -y
+      - sudo apt install python-pip
       - pip install docker-compose~=1.23.2
       - docker-compose -v
       - echo "$CI_REGISTRY_PASSWORD" | docker login registry.gitlab.com -u "$CI_REGISTRY_USER" --password-stdin
