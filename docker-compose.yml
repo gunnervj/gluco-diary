@@ -12,8 +12,6 @@ services:
     restart: always
     expose:
       - 27017
-    ports:
-      - 27017:27017
     volumes: 
       - /usr/mongo/data/db/gluco:/usr/mongo/data/db/gluco
     logging:
@@ -30,14 +28,11 @@ services:
     environment: 
       SPRING_PROFILES_ACTIVE: prod
       MONGODB_DATABASE: userdb
-      MONGODB_PORT_NUMBER: 27020
       MONGODB_USERNAME: ${USERDB_USER}
       MONGODB_PASSWORD: ${USERDB_PASS}
     restart: always
     expose:
       - 27017
-    ports:
-      - 27017:27020
     volumes: 
       - /usr/mongo/data/db/user:/usr/mongo/data/db/user
     logging:
