@@ -1,0 +1,10 @@
+eureka: 
+  instance:
+    leaseRenewalIntervalInSeconds: 5
+    leaseExpirationDurationInSeconds: 2
+  client: 
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://glregistryserver:7777/eureka
+    healthcheck:
+      enabled: true

@@ -1,0 +1,125 @@
+@import url('https://fonts.googleapis.com/css?family=Abel');
+
+.wrapper {
+    max-width: 340px;
+    max-height: 450px;
+    background: white;
+    margin: auto;
+    position: relative;
+    overflow: hidden;
+    border-radius:  10px 10px 10px 10px;
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);
+    transform: scale(0.95);
+}
+
+.wrapper .container-box {
+    width: 100%;
+    height: 100%;
+}
+
+.wrapper .container-box .top {
+    margin-top: -10px;
+    height: 60%;
+    width: 100%;
+    background: url('../../../../assets/images/night.jpg') no-repeat center center;
+    -webkit-background-size: 100%;
+    -moz-background-size: 100%;
+    -o-background-size: 100%;
+    background-size: 100%;
+}
+
+.wrapper .container-box .bottom {
+    width: 100%;
+    margin-top: -10px;
+    z-index: 5;
+    transition: transform 0.5s;
+}
+
+.wrapper .container-box .bottom.clicked {
+    transform: translateX(-50%);
+}
+
+.wrapper .container-box .bottom .left {
+    height: 100%;
+    width: 100%;
+    background: #ECF0F1;
+    color: rgb(10, 10, 10);
+}
+
+.wrapper .container-box .bottom .left .details {
+    padding: 10px;
+}
+
+.wrapper .container-box .bottom .left  h1 {
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    font-family: Abel, Arial, Verdana, sans-serif;
+    font-weight: 700;
+    text-align: center;
+}
+
+.widget-details {
+    text-align: center;
+}
+
+.card-heading {
+    text-align: center;
+    padding-bottom: 2px;
+    font-size: 12px;
+    font-family: Abel, Arial, Verdana, sans-serif;
+    letter-spacing: 1px;
+}
+
+.card-heading:after {
+    content: "";
+    position: absolute;
+    top: auto;
+    left: 50%;
+    right: auto;
+    bottom: 0;
+    width: 60px;
+    height: 2px;
+    margin: 0 0 0 -30px;
+    background: url(../../../../assets/images/strip-img.png) no-repeat;
+  }
+  
+  .column {
+    float: left;
+    width: 50%;
+    position: relative;
+  }
+  
+
+  .sugar-level {
+    font-size: 18px;
+    text-align: center;
+    font-family: Abel, Arial, Verdana, sans-serif;
+    letter-spacing: 1px;
+  }
+
+  .toolbar {
+      background: #3F5E5A;
+      height: 65px;
+      width: 100%;
+      padding: 5px;
+      text-align: center
+  }
+  
+ .add-button {
+    margin: 2px;
+    background: #E74C3C;
+    border: none;
+    border-radius: 50px;
+    height: 50px;
+    width: 50px;
+ }
+
+  .add-button-icon{
+      color: #fff;
+  }
+
+
+  

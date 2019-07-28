@@ -1,0 +1,137 @@
+.header-container {
+    background: #fff;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #fff, #fff);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #fff, #fff); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);
+    color: #272727;
+}
+
+.icon-logo {
+    display: inline-block;
+    margin-right: 5px;
+    font-size: 40px;
+    margin-left: 5px;
+    color: #ECF0F1;
+}
+
+.logo-txt {
+    font-family: 'Roboto', sans-serif;
+    font-size: 25px; 
+    color: #2c3e50;
+}
+
+.navbar-light .navbar-nav .active>.nav-link, .navbar-light .navbar-nav .nav-link.active, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .show>.nav-link {
+    color: #2c3e50;
+    font-weight: 400;
+    font-family: 'Lato', sans-serif;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: #2c3e50;
+    font-weight: 400;
+    font-family: 'Lato', sans-serif;
+}
+
+.navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:hover {
+    color: #080F5B;
+    font-family: 'Lato', sans-serif;
+}
+
+
+.toggler {
+    padding-top: 30px;
+    color: #ECF0F1 ;
+    font-size: 25px;
+}
+
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen 
+and (min-device-width : 320px) 
+and (max-device-width : 480px) {
+    .navbar-toggle-show {
+        display: none !important;
+    }
+}
+
+/* Smartphones (landscape) ----------- */
+@media only screen 
+and (min-width : 321px) {
+    .navbar-toggle-show {
+        display: none!important;
+    }
+}
+
+/* Smartphones (portrait) ----------- */
+@media only screen 
+and (max-width : 320px) {
+    .navbar-toggle-show {
+        display: none!important;
+    }
+}
+
+/* iPads (portrait and landscape) ----------- */
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) {
+    .navbar-toggle-show {
+        display: none!important;
+    }
+}
+
+/* iPads (landscape) ----------- */
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+and (orientation : landscape) {
+    .navbar-toggle-show {
+        display: none !important;
+    }
+}
+
+/* iPads (portrait) ----------- */
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+and (orientation : portrait) {
+
+    .navbar-toggle-show {
+        display: none !important;
+    }
+    .header-container {
+        background: #e7e9eb;  /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #e7e9eb, #e7e9eb);  /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #e7e9eb, #e7e9eb); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        color: #272727;
+    }
+}
+
+/* Desktops and laptops ----------- */
+@media only screen 
+and (min-width : 1224px) {
+    .header-container {
+        background: #e7e9eb;  /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #e7e9eb, #e7e9eb);  /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #e7e9eb, #e7e9eb); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        box-shadow: none;
+        color: #272727;
+    }
+}
+
+/* Large screens ----------- */
+@media only screen 
+and (min-width : 1824px) {
+    .header-container {
+        background: #e7e9eb;  /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #e7e9eb, #e7e9eb);  /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #e7e9eb, #e7e9eb); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        color: #272727;
+    }
+}
+
+/* iPhone 4 ----------- */
+@media
+only screen and (-webkit-min-device-pixel-ratio : 1.5),
+only screen and (min-device-pixel-ratio : 1.5) {
+/* Styles */
+}

@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: gluco-gateway
+
+ 
+server:
+  port: 8080
+
+
+zuul:
+  include-debug-header: true
+  ignoredServices: '*'
+  host:
+    connect-timeout-millis: 80000
+    socket-timeout-millis: 80000
+  routes:
+    user-service:
+      path: /api/users/**
+      serviceId: user-service
+      strip-prefix: false
+      sensitive-headers: Cookie,Set-Cookie
+    BLOOD-SUGAR-SERVICE:
+      path: /api/blood/glucose/**
+      serviceId: BLOOD-SUGAR-SERVICE
+      strip-prefix: false
+      sensitive-headers: Cookie,Set-Cookie
+---
+
+spring:
+  profiles:  dev
+  cloud:
+    config:
+      uri: http://localhost:8888
+      fail-fast: true
+      password: ${CONFIG_SERVICE_PASSWORD}
+      username: user
+      
+      
+---
+spring:
+  profiles: prod
+  cloud:
+    config:
+      uri: http://glconfigserver:8888
+      fail-fast: true
+      password: ${CONFIG_SERVICE_PASSWORD}
+      username: user

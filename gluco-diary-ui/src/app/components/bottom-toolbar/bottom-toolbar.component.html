@@ -1,0 +1,36 @@
+<div class="toolbar-container" *ngIf="this.authService.getUserAuthStatus()">
+  <div class="row">
+    <div class="col-3">
+      <div class="button-container">
+        <a routerLink="/dashboard" class="nav-link ">
+          <i class="fas fa-tachometer-alt"></i>
+          <span class="icon-label">Dashboard</span>
+        </a>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="button-container">
+        <a routerLink="/add" class="nav-link ">
+          <i class="fas fa-plus"></i>
+          <span class="icon-label">Add</span>
+        </a>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="button-container">
+        <a routerLink="/history" class="nav-link ">
+          <i class="fas fa-table"></i>
+          <span class="icon-label">History</span>
+        </a>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="button-container">
+        <a routerLink="/profile" class="nav-link ">
+          <i class="fas fa-user-circle"></i>
+          <span class="icon-label">Profile</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,80 @@
+<div class="wrapper">
+  <app-broken-widget *ngIf="isBroken"></app-broken-widget>
+  <div class="container-box" *ngIf="!isBroken">
+    <div class="top">
+      <h1>Readings (Today)</h1>
+    </div>
+    <div class="bottom">
+      <div class="left">
+        <div class="details">
+          <div class="row">
+            <div class="col-12">
+              <span class="sub-heading">Morning</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 ">
+              <div class="measurement-container">
+                <div>
+                  <div class="row">
+                    <div class="col-6"> <span class="label">Before Meal <span class="icon-314"></span>:</span><span
+                        class="reading">{{ todaysReading.morning && todaysReading.morning.beforeFood ?   todaysReading.morning.beforeFood : 0  }}<span class="unit-text">mg/dl</span></span>
+                    </div>
+                    <div class="col-6"> <span class="label">After Meal <span class="icon-314"></span>:</span><span
+                        class="reading">{{todaysReading.morning && todaysReading.morning.afterFood ?  todaysReading.morning.afterFood : 0}}<span class="unit-text">mg/dl</span></span> </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="details">
+          <div class="row">
+            <div class="col-12">
+              <span class="sub-heading">Afternoon</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 ">
+              <div class="measurement-container">
+                <div>
+                  <div class="row">
+                    <div class="col-6"> <span class="label">Before Meal <span class="icon-314"></span>:</span><span
+                        class="reading">{{ todaysReading.afternoon && todaysReading.afternoon.beforeFood ?   todaysReading.afternoon.beforeFood : 0  }}<span class="unit-text">mg/dl</span></span>
+                    </div>
+                    <div class="col-6"> <span class="label">After Meal <span class="icon-314"></span>:</span><span
+                        class="reading">{{ todaysReading.afternoon && todaysReading.afternoon.afterFood ?   todaysReading.afternoon.afterFood : 0  }}<span class="unit-text">mg/dl</span></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="details">
+          <div class="row">
+            <div class="col-12">
+              <span class="sub-heading">Night</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 ">
+              <div class="measurement-container">
+                <div>
+                  <div class="row">
+                    <div class="col-6"> <span class="label">Before Meal <span class="icon-314"></span>:</span><span
+                        class="reading">{{ todaysReading.night && todaysReading.night.beforeFood ?   todaysReading.night.beforeFood : 0  }}<span class="unit-text">mg/dl</span></span>
+                    </div>
+                    <div class="col-6"> <span class="label">After Meal <span class="icon-314"></span>:</span><span
+                        class="reading">{{ todaysReading.night && todaysReading.night.afterFood ?   todaysReading.night.afterFood : 0  }}<span class="unit-text">mg/dl</span></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br/>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,94 @@
+
+
+#add-component {
+    max-width: 400px;
+    margin: 0 auto;
+    margin-top: 85px;
+    margin-bottom: 15px;
+    border: 1px solid rgb(235, 232, 232);
+    padding: 25px;
+    border-radius: 5px;
+    background: #f3f3f3;
+}
+
+#add-component h1 {
+    font-size: 160%;
+    font-family: 'Titillium Web', sans-serif;
+    color: #000;
+}
+
+.add-form {
+    margin-top: 25px;
+}
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen 
+and (min-device-width : 320px) 
+and (max-device-width : 480px) {
+
+}
+
+/* Smartphones (landscape) ----------- */
+@media only screen 
+and (min-width : 321px) {
+
+}
+
+/* Smartphones (portrait) ----------- */
+@media only screen 
+and (max-width : 320px) {
+
+}
+
+/* iPads (portrait and landscape) ----------- */
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) {
+
+}
+
+/* iPads (landscape) ----------- */
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+and (orientation : landscape) {
+
+}
+
+/* iPads (portrait) ----------- */
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+and (orientation : portrait) {
+    #add-component {
+        border-radius:  10px 10px 10px 10px;
+        box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.07);
+    }
+
+}
+
+/* Desktops and laptops ----------- */
+@media only screen 
+and (min-width : 1224px) {
+
+    #add-component {
+        border-radius:  10px 10px 10px 10px;
+        box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.07);
+    }
+}
+
+/* Large screens ----------- */
+@media only screen 
+and (min-width : 1824px) {
+    #add-component {
+        border-radius:  10px 10px 10px 10px;
+        box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.07);
+    }
+}
+
+/* iPhone 4 ----------- */
+@media
+only screen and (-webkit-min-device-pixel-ratio : 1.5),
+only screen and (min-device-pixel-ratio : 1.5) {
+
+}

@@ -1,0 +1,20 @@
+
+<div class="wrapper">
+        <app-broken-widget *ngIf="isBroken"></app-broken-widget>
+        <div class="container-box" *ngIf="!isBroken">
+            <div class="top">
+                    <h1>Today's Readings</h1>
+            </div>
+            <div class="bottom">
+                <div class="left">
+                    <div class="details align-middle">
+                        <p-chart type="line" [data]="data" (onDataSelect)="selectData($event)"></p-chart>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+
+

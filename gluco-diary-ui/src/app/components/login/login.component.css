@@ -1,0 +1,98 @@
+
+.login-container {
+ 
+}
+
+#login-component {
+    max-width: 400px;
+    margin: 0 auto;
+    margin-top: 85px;
+    margin-bottom: 15px;
+    border: 1px solid rgb(235, 232, 232);
+    padding: 25px;
+    border-radius: 5px;
+    background: #f3f3f3;
+}
+
+#login-component h1 {
+    font-size: 160%;
+    font-family: 'Titillium Web', sans-serif;
+    color: #000;
+}
+
+.login-form {
+    margin-top: 25px;
+    text-align: left;
+}
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen 
+and (min-device-width : 320px) 
+and (max-device-width : 480px) {
+
+}
+
+/* Smartphones (landscape) ----------- */
+@media only screen 
+and (min-width : 321px) {
+
+}
+
+/* Smartphones (portrait) ----------- */
+@media only screen 
+and (max-width : 320px) {
+
+}
+
+/* iPads (portrait and landscape) ----------- */
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) {
+
+}
+
+/* iPads (landscape) ----------- */
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+and (orientation : landscape) {
+
+}
+
+/* iPads (portrait) ----------- */
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+and (orientation : portrait) {
+    #login-component {
+        border-radius:  10px 10px 10px 10px;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.07);
+    }
+
+}
+
+/* Desktops and laptops ----------- */
+@media only screen 
+and (min-width : 1224px) {
+
+    #login-component {
+        border-radius:  10px 10px 10px 10px;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.07);
+    }
+}
+
+/* Large screens ----------- */
+@media only screen 
+and (min-width : 1824px) {
+    #login-component {
+        border-radius:  10px 10px 10px 10px;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.07);
+    }
+}
+
+/* iPhone 4 ----------- */
+@media
+only screen and (-webkit-min-device-pixel-ratio : 1.5),
+only screen and (min-device-pixel-ratio : 1.5) {
+
+}

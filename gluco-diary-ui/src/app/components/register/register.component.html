@@ -1,0 +1,76 @@
+<div class="container" id="register-component">
+  <div *ngIf="!isSuccess">
+    <div class="logo-continer" *ngIf="!isSuccess">
+      <img src="../../../assets/images/logo_transparent.png" width="150px" class="welcome-logo">
+    </div>
+    <div class="row container justify-content-center">
+      <div class="col-md-12 text-center heading">
+
+      </div>
+    </div>
+    <div class="register-form">
+      <div class="formErrorMessage">
+        <div class="alert alert-danger" *ngIf="errorList.length > 0">
+          <div *ngFor="let error of errorList">
+            <span>{{error.message}}</span>
+            <br />
+            <span *ngIf="error.details">{{ 'Reason: ' + error.details}}</span>
+         </div>
+        </div>
+      </div>
+      <form #registerForm="ngForm" (ngSubmit)="onRegisterUser()">
+        <div class="form-group">
+          <label for="name" aria-required="true">Name<span class="required-txt"> (required)</span></label>
+          <input type="text" class="input" class="form-control" name="name" placeholder="Name" required maxlength="15"
+            [(ngModel)]="user.name" #name="ngModel">
+          <small id="FirstNameErrorMsg" *ngIf="name.invalid && (name.dirty || name.touched)"
+            class="form-text errorMsg">Enter a valid Name.</small>
+        </div>
+        <div class="form-group">
+          <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" id="male" value="Male" name="gender" class="custom-control-input" #gender="ngModel"
+              required [(ngModel)]="user.gender">
+            <label class="custom-control-label" for="male">Male</label> <span class="icon-297 gender-icon-male"> </span>
+          </div>
+          <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" id="female" value="Female" name="gender" class="custom-control-input" #gender="ngModel"
+              required [(ngModel)]="user.gender">
+            <label class="custom-control-label" for="female">Female</label><span
+              class="icon-298 gender-icon-female"></span>
+          </div>
+          <small id="genderErrorMsg" *ngIf="gender.invalid && (gender.dirty || gender.touched)"
+            class="form-text errorMsg">Enter your Gender. </small>
+        </div>
+        <div class="form-group">
+          <label for="email" aria-required="true">Email<span class="required-txt"> (required)</span></label>
+          <input class="input" type="email" class="form-control" email=true name="email" placeholder="Email" required
+            maxlength="35" [(ngModel)]="user.email" #email="ngModel">
+          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+          <small id="EmailErrorMsg" *ngIf="email.invalid && (email.dirty ||email.touched)"
+            class="form-text errorMsg">Enter a
+            valid Email.</small>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Password<span class="required-txt"> (required)</span></label>
+          <input class="input" type="password" class="form-control" name="password" required placeholder="Password"
+            maxlength="35" pattern="^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,15}$" [(ngModel)]="user.password"
+            #password="ngModel">
+          <small id="passwordHelp" class="form-text text-muted">Hint: Should contain atleast one special character,
+            number
+            and an uppercase character. Should be of length between 7 and 15.</small>
+        </div>
+        <div class="row container justify-content-center">
+          <div class="col-md-12 text-center">
+            <button type="submit" class="btn btn-primary">Register</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <section *ngIf="isSuccess">
+    <br /><br />
+    <div class="alert alert-success">
+      You have succcessfully registered. You can now login.
+    </div>
+  </section>
+</div>

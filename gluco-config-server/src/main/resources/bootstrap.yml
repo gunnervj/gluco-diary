@@ -1,0 +1,27 @@
+
+spring:
+  application:
+    name: gluco-config-server
+  security:
+    user:
+      password: ${CONFIG_SERVICE_PASSWORD}
+  profiles:
+     active: native
+     
+server:
+  port: 8888
+
+encrypt:
+  key-store:
+    location: classpath:/gluco-keystore.jks
+    alias: gluco-diary
+    password: ${GL_KEY_PASSWORD}
+    secret: ${GL_KEY_PASSWORD}
+
+---
+spring:
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/configs

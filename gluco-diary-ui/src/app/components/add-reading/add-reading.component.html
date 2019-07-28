@@ -1,0 +1,61 @@
+<div class="add-container">
+  <div class="container" id="add-component">
+    <div class="row container justify-content-center">
+      <div class="col-md-12 text-center heading">
+        <h1><i class="fas fa-tint"></i>&nbsp; Add Reading</h1>
+      </div>
+    </div>
+    <div class="add-form">
+    <div class="formErrorMessage">
+        <div class="alert alert-danger" *ngIf="errorList.length > 0">
+          <div *ngFor="let error of errorList">
+            <span>{{error.message}}</span>
+            <br />
+            <span *ngIf="error.details">{{ 'Reason: ' + error.details}}</span>
+          </div>
+        </div>
+      </div>
+      <form #addReadingForm="ngForm" (ngSubmit)="saveReading()">
+        <div class="form-group">
+          <label for="date">Date: </label><br/>
+          <p-calendar id="date" name="date" [(ngModel)]="readingDate" #date="ngModel" [maxDate]="today"></p-calendar>
+        </div>
+
+        <div class="form-group">
+          <label for="recording-time">For:</label>
+          <select class="form-control" id="recording-time" name="recordingtime" [(ngModel)]="frequency" required #recordingtime="ngModel">
+            <option>Morning</option>
+            <option>Afternoon</option>
+            <option>Night</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" id="before-food" value="Pre_Meal" name="beforeAfterModel" class="custom-control-input" [(ngModel)]="beforeAfter" #beforeAfterModel="ngModel">
+            <label class="custom-control-label" for="before-food">Before Food&nbsp;<i class="fas fa-pizza-slice"></i></label>
+          </div>
+          <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" id="after-food" value="Post_Meal" name="beforeAfterModel" class="custom-control-input" [(ngModel)]="beforeAfter" #beforeAfterModel="ngModel">
+            <label class="custom-control-label" for="after-food">After Food &nbsp;<i class="fas fa-pizza-slice"></i></label>
+          </div>
+        </div>
+        <div class="form-group">
+            <label for="reading" aria-required="true">Reading<span class="required-txt"> (required)</span></label>
+            <div class="input-group">
+            <input type="text" class="form-control" id="reading" placeholder="Example: 165" [(ngModel)]="reading" name="readingModel" #readingModel="ngModel">
+            <div class="input-group-append">
+                <div class="input-group-text">mg/dl</div>
+            </div>
+            </div>
+        </div>
+        <br/>
+        <div class="row container justify-content-center">
+          <div class="col-md-12 text-center">
+            <button type="submit" class="btn btn-primary">Add</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>

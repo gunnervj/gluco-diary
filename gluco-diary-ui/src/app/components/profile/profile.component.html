@@ -1,0 +1,13 @@
+<div class="profile-container">
+  <div class="profile-header">
+    <div class="photo-frame">
+        <i class="fas fa-user-alt"></i>
+    </div>
+    <span class="profile-name">{{this.user.name}}</span>
+  </div>
+  <br/>
+  <div class="action-container">
+        <button type="button"  class="btn btn-primary btn-lg btn-block profile-buttons delete-button profile-buttons"><i class="fas fa-user-times"></i> Delete Profile</button>
+        <button type="button" (click)="logOff()" class="btn btn-primary btn-lg btn-block profile-buttons"><i class="fas fa-sign-out-alt"></i> Logoff</button>
+  </div>
+</div>

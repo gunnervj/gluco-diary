@@ -1,0 +1,18 @@
+spring:
+  data:
+    mongodb:
+      host: glucodb
+      port: 27017
+      username: '{cipher}AQCVI4DLL/svMdkVA2FdkOzhKqfgagBPH9Awvlyx9AL9mnP90AX+n20NZFCjl0A4bXtI437tBgzH7fiWkbhK5sR1GaJteW2Adc+ffKgFjdu0Vna3uBjzWAVkM9+Q/T4IDp1xU1WxMfjtIZ3GM5NQspVcfVMeJhzfKJUCFLsbCoJrNX7bMFGnJjYvD4+dNGz4TLGkikiCDtU/fjhLF4pIcpaEbgqVGKIT0zLFIUt9w93wzmbAPJUWA9uEMs1CeM4RsUvwjmcGZH1anYjIJ06bpS4vRrOwyYrdwRFsKXCdKvbVoa1BKzoMyWOTJPL0bgpyJznxlLGv0N62bXHeNSubXeDrqGoYNIr3baujqHExTrWcva4FjNokKbFJwkhcfCZ5UU8='
+      password: '{cipher}AQBhML2EAxjWmZPShEoeiB8GRbqmz1DE/Ffv/unXJR0BdbuBSixSZBxWS7mZqfLBNhmK5OixZpXuKH2Jic/aitwrQr7uP5GOr69Be/hCLx5a9fQkSw9n5pEkT+7Dl9ojZBHmnSWAFG/LsGaWwgaOB8YCQ/NgjSa73/7xakPu92vcLOM3xdo5UQBgMLOx07mFV4Aegp/nwIr8sfulYwZM5xNkg+l0UqfsMQ24tl5n15lt78KmIMQH5AxOcR8+xyaid3fnNOy7WK0X8T7GGPUfYnNv3z2HOCJ+1mvQweNaqf2wFm92TD0yPTOk8U/mXaO0IkrTd4HnJ1JJRRKaigIeEYlmyrzDRiexdXliEgYttQuYdHcY+fg2hY1Q462vc+QoAjw='
+      database: gluco-db
+
+eureka: 
+  client:
+    serviceUrl:
+      defaultZone: http://glregistryserver:7777/eureka
+      
+      
+logging:
+  level:
+    com.gluco.diary: info

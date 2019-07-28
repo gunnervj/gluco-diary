@@ -1,0 +1,24 @@
+.welcome-logo {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 45px;
+}
+
+.full-width {
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+}
+
+h4 {
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-size: 20px;
+}
+
+h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    font-size: 35px;
+}
