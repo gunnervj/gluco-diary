@@ -35,9 +35,9 @@ services:
       MONGODB_PASSWORD: ${USERDB_PASS}
     restart: always
     expose:
-      - 27020
+      - 27017
     ports:
-      - 27020:27020
+      - 27017:27020
     volumes: 
       - /usr/mongo/data/db/user:/usr/mongo/data/db/user
     logging:
@@ -169,7 +169,7 @@ services:
     image: ${IMAGE_REG_LOC}/blood-sugar-service
     restart: always
     ports:
-      - 8080:8080
+      - 8082:8082
     links:
       - glconfigserver
       - glregistryserver
