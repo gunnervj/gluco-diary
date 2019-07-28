@@ -53,7 +53,6 @@ services:
   glconfigserver:
     container_name: glconfigserver
     environment:
-      SPRING_PROFILES_ACTIVE: prod
       CONFIG_SERVICE_PASSWORD: ${CONFIG_SERVICE_PASSWORD}
       GL_KEY_PASSWORD: ${GL_KEY_PASSWORD}
     build: ./gluco-config-server
