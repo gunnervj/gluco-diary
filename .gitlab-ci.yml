@@ -1,0 +1,83 @@
+image: docker:stable
+
+stages:
+  - maven-build
+  - docker-build-push
+  - deploy
+
+
+maven-build:
+  image: maven:3-jdk-8
+  stage: maven-build
+  script: "mvn clean install package"
+  tags:
+    - dev
+  artifacts:
+    paths:
+      - ./blood-sugar-service/target/*.jar
+      - ./gluco-config-server/target/*.jar
+      - ./gluco-gateway/target/*.jar
+      - ./gluco-registry-server/target/*.jar
+      - ./user-service/target/*.jar
+      
+      
+docker-build-push:
+  stage: docker-build-push
+  tags:
+    - dev
+  before_script:
+      - sudo apt install python3-pip
+      - pip install docker-compose~=1.23.2
+      - docker-compose -v
+      - echo "$CI_REGISTRY_PASSWORD" | docker login registry.gitlab.com -u "$CI_REGISTRY_USER" --password-stdin
+  script:
+    - export CONFIG_SERVICE_PASSWORD=$CONFIG_SERVICE_PASSWORD
+    - export GLUCODB_PASS=$GLUCODB_PASS
+    - export GLUCODB_USER=$GLUCODB_USER
+    - export GL_KEY_PASSWORD=$GL_KEY_PASSWORD
+    - export USERDB_PASS=$USERDB_PASS
+    - export USERDB_USER=$USERDB_USER
+    - whoami
+    - docker --version
+    - docker-compose build --pull
+    - docker images
+    - docker tag $IMAGE_REG_LOC/blood-sugar-service:latest $IMAGE_REG_LOC/blood-sugar-service:v1.0
+    - docker push $IMAGE_REG_LOC/blood-sugar-service:latest
+    - docker push $IMAGE_REG_LOC/blood-sugar-service:v1.0
+    - docker tag $IMAGE_REG_LOC/gluco-config-server:latest $IMAGE_REG_LOC/gluco-config-server:v1.0
+    - docker push $IMAGE_REG_LOC/gluco-config-server:latest
+    - docker push $IMAGE_REG_LOC/gluco-config-server:v1.0
+    - docker tag $IMAGE_REG_LOC/gluco-gateway:latest $IMAGE_REG_LOC/gluco-gateway:v1.0
+    - docker push $IMAGE_REG_LOC/gluco-gateway:latest
+    - docker push $IMAGE_REG_LOC/gluco-gateway:v1.0
+    - docker tag $IMAGE_REG_LOC/gluco-registry-server:latest $IMAGE_REG_LOC/gluco-registry-server:v1.0
+    - docker push $IMAGE_REG_LOC/gluco-registry-server:latest
+    - docker push $IMAGE_REG_LOC/gluco-registry-server:v1.0
+    - docker tag $IMAGE_REG_LOC/user-service:latest $IMAGE_REG_LOC/user-service:v1.0
+    - docker push $IMAGE_REG_LOC/user-service:latest
+    - docker push $IMAGE_REG_LOC/user-service:v1.0
+    - docker images
+
+deploy:
+  stage: deploy
+  tags:
+    - dev
+  before_script: 
+    - sudo apt install python3-pip
+    - pip install docker-compose~=1.23.2
+    - echo "$CI_REGISTRY_PASSWORD" | docker login registry.gitlab.com -u "$CI_REGISTRY_USER" --password-stdin
+  script:
+    - export CONFIG_SERVICE_PASSWORD=$CONFIG_SERVICE_PASSWORD
+    - export GLUCODB_PASS=$GLUCODB_PASS
+    - export GLUCODB_USER=$GLUCODB_USER
+    - export GL_KEY_PASSWORD=$GL_KEY_PASSWORD
+    - export USERDB_PASS=$USERDB_PASS
+    - export USERDB_USER=$USERDB_USER
+    - docker image prune -f
+    - docker pull $IMAGE_REG_LOC/blood-sugar-service:latest
+    - docker pull $IMAGE_REG_LOC/gluco-config-server:latest
+    - docker pull $IMAGE_REG_LOC/gluco-gateway:latest
+    - docker pull $IMAGE_REG_LOC/gluco-registry-server:latest
+    - docker pull $IMAGE_REG_LOC/user-service:latest
+    - docker images
+    - docker-compose up -d
