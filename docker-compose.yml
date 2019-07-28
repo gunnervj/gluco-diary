@@ -15,7 +15,7 @@ services:
     ports:
       - 27017:27017
     volumes: 
-      - ./data/db:/data/db
+      - /usr/mongo/data/db/gluco:/usr/mongo/data/db/gluco
     logging:
       options:
         max-size: "10m"
@@ -39,7 +39,7 @@ services:
     ports:
       - 27020:27020
     volumes: 
-      - ./data/db/user:/data/db/user
+      - /usr/mongo/data/db/user:/usr/mongo/data/db/user
     logging:
       options:
         max-size: "10m"
