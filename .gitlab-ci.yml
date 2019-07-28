@@ -63,8 +63,8 @@ deploy:
   tags:
     - dev
   before_script: 
-    - sudo apt install python3-pip
-    - pip install docker-compose~=1.23.2
+    - sudo apt install python-pip
+    - pip install docker-compose
     - echo "$CI_REGISTRY_PASSWORD" | docker login registry.gitlab.com -u "$CI_REGISTRY_USER" --password-stdin
   script:
     - export CONFIG_SERVICE_PASSWORD=$CONFIG_SERVICE_PASSWORD
