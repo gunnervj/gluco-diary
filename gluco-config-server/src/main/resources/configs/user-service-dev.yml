@@ -12,7 +12,9 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:7777/eureka
       
-      
+token: 
+  validity: 3600000
+       
 logging:
   level:
     com.gluco.diary: debug
