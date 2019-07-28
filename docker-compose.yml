@@ -7,8 +7,8 @@ services:
     environment: 
       SPRING_PROFILES_ACTIVE: prod
       MONGODB_DATABASE: gluco-db
-      MONGODB_USERNAME: ${USERDB_USER}
-      MONGODB_PASSWORD: ${USERDB_PASS}
+      MONGODB_USERNAME: ${GLUCODB_USER}
+      MONGODB_PASSWORD: ${GLUCODB_PASS}
     restart: always
     expose:
       - 27017
