@@ -60,7 +60,9 @@ services:
     image: ${IMAGE_REG_LOC}/gluco-config-server
     restart: always
     depends_on:
-      sqmongodb:
+      userdb:
+        condition: service_started
+      glucodb:
         condition: service_started
     ports:
       - 8888:8888
@@ -88,9 +90,9 @@ services:
     ports:
       - 7777:7777
     links:
-      - sqconfigserver
+      - glconfigserver
     depends_on:
-      sqconfigserver:
+      glconfigserver:
         condition: service_healthy
     logging:
       options:
