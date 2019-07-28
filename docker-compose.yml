@@ -55,8 +55,7 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: prod
       CONFIG_SERVICE_PASSWORD: ${CONFIG_SERVICE_PASSWORD}
-      DP_STORE_PASSWORD: ${GL_KEY_PASSWORD}
-      DP_SK_PASSWORD: ${GL_KEY_PASSWORD}
+      GL_KEY_PASSWORD: ${GL_KEY_PASSWORD}
     build: ./gluco-config-server
     image: ${IMAGE_REG_LOC}/gluco-config-server
     restart: always
