@@ -17,9 +17,117 @@ Front end for the application runs on Angular 8. The entire application is packa
 
 ## Back End
 
-Backend is based on microservices artchitecture and is developed with springboot and netflix package.
+Backend services are in springboot with springboot netflix. There are two core services right now, one for user resitration\authnetication and another to record the blood sugar levels. 
 
 ### Architecture
 
-<img src="/uploads/cf3dfcae4ece5635acd3b951d0992ca6/Untitled_Diagram.png" width="100%">
+<img src="/uploads/cf3dfcae4ece5635acd3b951d0992ca6/Untitled_Diagram.png" width="80%" style="display:block; margin:0 auto;">
+
+There are additional services to support a microservice architecture. 
+
+
+**User-Service**
+
+
+Used to register and authenticate a user to get a JWT token. Additionally, it has methods to validate a token, get user profile and logout. User micro service has its own database. Here we have used mongodb to store user details.
+Once a user authenticates, a JSON web token is generated and stored against user profile. JSON web token is signed using a key and has an expiry which is configurable. All resources except login and register is secured and needs a token bearer authentication. 
+
+*Note: I will slowly improve authentication process to make it more efficient.*
+
+
+**blood-sugar-service**
+
+This microservice is responsible for recording a users blood sugar level. This service has token based authentication enabled. It validates the token by calling user-service. 
+
+## Infra Services
+
+For infrastructure, we currently have spring cloud config server, eureka registry server and zuul proxy gateway.
+
+
+**Cloud Config Server**
+
+All services has their properties hosted in the cloud config server. The properties are currently hosted inside the service with native profile. [Sensitive datas are encrypted using a keystore.]
+Cloud confg server has security enabled. Inorder to access the properties via browser, you need to authenticate yourself with a user name and password which you will configure.
+
+** Zuul Proxy **
+
+All communication from the UI is routed to services via the zuul proxy. Proxy has routes configured for user and blood-glucose services. blood-glucose-service uses  spring feign client to call user-service for token validation. This is done via look-up in the registry server.
+
+
+** Registry Server **
+
+All services register itself with the spring Eureka server. 
+
+
+## Set Up
+
+Follow below steps to run the application : 
+
+### Pre-Requisties
+
+*  Install JDK
+*  Install maven
+*  Install Docker 
+*  Install Docker Compose
+
+
+### Spring Config KeyStore
+
+Project currently contains a java keystore under config server resources. This is used to encrypt the sensitive information when stored in the config files. 
+
+So, Generate a java keystore and replace the file. Also, update the bootstrap.yml file with your filename.
+
+`encrypt:
+  key-store:
+    location: classpath:/gluco-keystore.jks`
+
+
+### Environment Variables
+
+Many of the passwords and settings are configured via environment variable. Hence set up these in your machine environment.
+
+* SPRING_PROFILES_ACTIVE=prod
+* USERDB_PASS=<Add>
+* USERDB_USER=<Add>
+* GLUCODB_PASS=<Add>
+* GLUCODB_USER=<Add>
+* GL_KEY_PASSWORD=<Add [ This is your keystore password generated before ]
+* CONFIG_SERVICE_PASSWORD=<Add> [ This is the password your spring config service will use to secure itself.]
+
+
+### Run Maven
+
+Run maven build to generate the FATJar files. We will pack these as a docker image soon.
+
+`mvn clean build`
+
+### Containarize
+
+We will contianarize the jars that we created for each service. Every service has its own Dockerfile. This file is used to create the docker images. All these imaages will share a network. To make things simpler, we will use docker-compose
+The root of the project contains a docker-compose.yml file with the docker instrutions. It has placeholders for various environemnt properties  which will be taken from your system environment settings.
+
+Run
+
+`docker-compose build` - This will build the docker images.
+
+After creating the images, we will run the docker images by executying
+
+`docker-compose up -d`
+
+Note: -d will make the startup silent.
+
+
+
+If you want to see the contianers, execute 
+
+`docker ps`
+
+To see logs for each container
+
+'docker logs <containerid>'
+
+
+
+
+
 
