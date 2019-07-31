@@ -58,8 +58,6 @@ services:
         condition: service_started
       glucodb:
         condition: service_started
-    ports:
-      - 8888:8888
     expose:
       - 8888
     logging:
@@ -106,6 +104,8 @@ services:
     restart: always
     ports:
       - 8080:8080
+    expose: 
+      - 8080
     links:
       - glconfigserver
       - glregistryserver
@@ -131,8 +131,6 @@ services:
     build: ./user-service
     image: ${IMAGE_REG_LOC}/user-service
     restart: always
-    ports:
-      - 8081:8081
     expose:
       - 8081      
     links:
@@ -163,8 +161,8 @@ services:
     build: ./blood-sugar-service
     image: ${IMAGE_REG_LOC}/blood-sugar-service
     restart: always
-    ports:
-      - 8082:8082
+    expose:
+      - 8082
     links:
       - glconfigserver
       - glregistryserver
@@ -185,7 +183,24 @@ services:
       gluconetwork:
         aliases:
           - blood-sugar-service.gl.com
-
+  gluco-diary-ui:
+    container_name: glucodiary
+    build: ./gluco-diary-ui
+    image: ${IMAGE_REG_LOC}/gluco-diary-ui
+    restart: always
+    links:
+      - gateway
+    ports:
+      - 80:80
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+    networks:
+      gluconetwork:
+        aliases:
+          - blood-sugar-ui.gl.com
+      
 networks: 
   gluconetwork: 
     driver: bridge

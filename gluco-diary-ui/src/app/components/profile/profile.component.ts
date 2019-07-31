@@ -11,7 +11,7 @@ import { User } from 'src/app/models/user';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  private user: User;
+  public user: User;
   constructor(private userService: UserService, private router: Router, private authService: AuthService) { }
 
   ngOnInit() {
