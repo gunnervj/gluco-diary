@@ -13,17 +13,23 @@ Project provides a simple ui for recording blood glucose readings. Application h
 
 Front end for the application runs on Angular 8. The entire application is packaged inside a docker container. The compiled code will be running in a nginx webserver inside the docker.
 
-![Screenshot_from_2019-07-31_19-40-37](/uploads/84f7916fbcc75e0cd38bd4a60462680a/Screenshot_from_2019-07-31_19-40-37.png)
+
+| Desktop View | Mobile View |
+| ------ | ------ |
+| ![Screenshot_from_2019-07-31_22-24-36](/uploads/8b74706f6b07df955b753e1dfff8b74c/Screenshot_from_2019-07-31_22-24-36.png) | ![iphone](/uploads/bef5d7e2d9749d8aab8752c007cac916/iphone.png) |
+
+
+
+
 
 ## Back End
 
 Backend services are in springboot with springboot netflix. There are two core services right now, one for user resitration\authnetication and another to record the blood sugar levels. 
+There are additional services to support a microservice architecture. 
 
 ### Architecture
 
-<img src="/uploads/cf3dfcae4ece5635acd3b951d0992ca6/Untitled_Diagram.png" width="80%" style="display:block; margin:0 auto;">
-
-There are additional services to support a microservice architecture. 
+<img src="/uploads/cf3dfcae4ece5635acd3b951d0992ca6/Untitled_Diagram.png" width="50%" style="display:block; margin:0 auto;">
 
 
 **User-Service**
@@ -49,9 +55,14 @@ For infrastructure, we currently have spring cloud config server, eureka registr
 All services has their properties hosted in the cloud config server. The properties are currently hosted inside the service with native profile. [Sensitive datas are encrypted using a keystore.]
 Cloud confg server has security enabled. Inorder to access the properties via browser, you need to authenticate yourself with a user name and password which you will configure.
 
+
+
+
 ** Zuul Proxy **
 
 All communication from the UI is routed to services via the zuul proxy. Proxy has routes configured for user and blood-glucose services. blood-glucose-service uses  spring feign client to call user-service for token validation. This is done via look-up in the registry server.
+
+
 
 
 ** Registry Server **
@@ -124,7 +135,21 @@ If you want to see the contianers, execute
 
 To see logs for each container
 
-'docker logs <containerid>'
+`docker logs <containerid>`
+
+
+
+## Next Steps
+
+
+1.  Improvise user-service with authentication through cache.
+2.  Add reporting-service to provide data for graphs and charts.
+3.  Add notification-service to provide user notifications.
+4.  Add distributed tracing.
+5.  Add monitoring and reporting.
+
+
+
 
 
 
