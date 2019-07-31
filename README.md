@@ -21,7 +21,5 @@ Backend is based on microservices artchitecture and is developed with springboot
 
 ### Architecture
 
-<p align="center">
-<img src="/uploads/cf3dfcae4ece5635acd3b951d0992ca6/Untitled_Diagram.png">
-</p>
+<img src="/uploads/cf3dfcae4ece5635acd3b951d0992ca6/Untitled_Diagram.png" width="100%">
 
