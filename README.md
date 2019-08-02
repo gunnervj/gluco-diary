@@ -137,6 +137,19 @@ To see logs for each container
 
 `docker logs <containerid>`
 
+##CI-CD
+
+Currently the project has a config file for gitlab-ci. With every commit pipeline will be triggered to build and deploy the images. As a test I used digital ocean droplet to install gitlab-runner and automate the deployment of the services.
+
+The CI happens in 3 different steps.
+
+
+1.  Maven build is kicked off to buid and package services.
+2.  Build docker images. For this we are using docker-compose file.
+3.  Run the docker-compose to start the containers.
+
+
+Note: Angular build and package is done inside the Docker via Dockerfile. The final output files are copied into the nginx server.
 
 
 ## Next Steps
