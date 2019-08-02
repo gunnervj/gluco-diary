@@ -148,6 +148,7 @@ The CI happens in 3 different steps.
 2.  Build docker images. For this we are using docker-compose file.
 3.  Run the docker-compose to start the containers.
 
+![cicd](/uploads/b79da825a49f1b733496b628a7d895e8/cicd.png)
 
 Note: Angular build and package is done inside the Docker via Dockerfile. The final output files are copied into the nginx server.
 
