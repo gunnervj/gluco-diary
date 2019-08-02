@@ -58,14 +58,14 @@ Cloud confg server has security enabled. Inorder to access the properties via br
 
 
 
-** Zuul Proxy **
+**Zuul Proxy **
 
 All communication from the UI is routed to services via the zuul proxy. Proxy has routes configured for user and blood-glucose services. blood-glucose-service uses  spring feign client to call user-service for token validation. This is done via look-up in the registry server.
 
 
 
 
-** Registry Server **
+**Registry Server **
 
 All services register itself with the spring Eureka server. 
 
@@ -137,7 +137,7 @@ To see logs for each container
 
 `docker logs <containerid>`
 
-##CI-CD
+## CI-CD
 
 Currently the project has a config file for gitlab-ci. With every commit pipeline will be triggered to build and deploy the images. As a test I used digital ocean droplet to install gitlab-runner and automate the deployment of the services.
 
