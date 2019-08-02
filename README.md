@@ -58,14 +58,14 @@ Cloud confg server has security enabled. Inorder to access the properties via br
 
 
 
-**Zuul Proxy **
+**Zuul Proxy**
 
 All communication from the UI is routed to services via the zuul proxy. Proxy has routes configured for user and blood-glucose services. blood-glucose-service uses  spring feign client to call user-service for token validation. This is done via look-up in the registry server.
 
 
 
 
-**Registry Server **
+**Registry Server**
 
 All services register itself with the spring Eureka server. 
 
