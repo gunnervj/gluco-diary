@@ -9,9 +9,9 @@ public interface IUserService {
 	
 	Boolean signUp(User user);
 	
-	User getProfile(Principal loggedInUser);
+	User getProfile(Principal loggedInUser, String authToken);
 	
 	String login(LoginRequest request);
 	
-	Boolean logout(Principal loggedInUser);
+	Boolean logout(Principal loggedInUser, String authToken);
 }

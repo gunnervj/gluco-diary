@@ -93,7 +93,22 @@ services:
     networks:
       gluconetwork:
         aliases:
-          - registry-server.gl.com   
+          - registry-server.gl.com
+
+  hazelcastmgmtcenter:
+    container_name: mancenter
+    image: hazelcast/management-center:3.11.2
+    volumes:
+        - /usr/mancenter:/mancenter
+    environment:
+        - MANCENTER_DATA=/mancenter
+        - JAVA_OPTS=-Dhazelcast.mc.rest.enabled=true
+    ports:
+        - 7779:8080    
+    expose:
+      - 8080
+    networks: 
+      - gluconetwork    
   gateway: 
     container_name: gateway
     environment:
@@ -124,25 +139,30 @@ services:
         aliases:
           - gateway-service.gl.com           
   gluserservice: 
-    container_name: gluserservice
     environment:
       SPRING_PROFILES_ACTIVE: prod
       CONFIG_SERVICE_PASSWORD: ${CONFIG_SERVICE_PASSWORD}
+      HZ_CAST_MGMGT_PASSWORD: ${HZ_CAST_MGMGT_PASSWORD}
+      HZ_CAST_MGMGT_USER: ${HZ_CAST_MGMGT_USER}
     build: ./user-service
     image: ${IMAGE_REG_LOC}/user-service
     restart: always
     expose:
-      - 8081      
+      - 8081
+      - 5701      
     links:
       - glconfigserver
       - userdb
       - glregistryserver
+      - hazelcastmgmtcenter
     depends_on:
       glconfigserver:
         condition: service_healthy
       glregistryserver:
         condition: service_healthy
       userdb:
+        condition: service_started
+      hazelcastmgmtcenter:
         condition: service_started
     logging:
       options:

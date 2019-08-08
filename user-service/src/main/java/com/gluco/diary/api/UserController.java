@@ -35,8 +35,8 @@ public class UserController implements UserAPI {
 	}
 
 	@Override
-	public ResponseEntity<User> profile(Principal loggedInUser) {
-		User user = userService.getProfile(loggedInUser);
+	public ResponseEntity<User> profile(Principal loggedInUser, String authToken) {
+		User user = userService.getProfile(loggedInUser, authToken);
 		return new ResponseEntity<User>(user, HttpStatus.OK);
 	}
 
@@ -50,8 +50,8 @@ public class UserController implements UserAPI {
 	}
 
 	@Override
-	public ResponseEntity<?> logout(Principal loggedInUser) {
-		userService.logout(loggedInUser);
+	public ResponseEntity<?> logout(Principal loggedInUser, String authToken) {
+		userService.logout(loggedInUser, authToken);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 

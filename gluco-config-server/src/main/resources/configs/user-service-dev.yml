@@ -14,7 +14,14 @@ eureka:
       
 token: 
   validity: 3600000
-       
+  idle: 
+    validity: 50000
+    
+hazelcast:
+  mgmt:
+    cent:
+      url: http://localhost:7779/hazelcast-mancenter/
+
 logging:
   level:
     com.gluco.diary: debug

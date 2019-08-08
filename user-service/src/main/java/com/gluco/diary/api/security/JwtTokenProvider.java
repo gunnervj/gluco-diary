@@ -4,14 +4,13 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.crypto.SecretKey;
 import javax.servlet.http.HttpServletRequest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,27 +25,37 @@ import com.gluco.diary.api.constants.ERROR_CODES;
 import com.gluco.diary.api.constants.Role;
 import com.gluco.diary.api.exceptions.InvalidTokenException;
 import com.gluco.diary.api.security.service.SecurityUserDetailsService;
+import com.hazelcast.core.HazelcastInstance;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 public class JwtTokenProvider {
-	private static final Logger LOGGER = LoggerFactory.getLogger(JwtTokenProvider.class.getName());
 	private SecretKey secretKey;
 	@Value("${token.validity}")
 	private long validityInMilliseconds = 3600000; // 1h
+	private static final String SETTINGS_MAP = "SETTINGS_MAP";
+	private static final String JWT_SHA_KEY = "JWT_SHA_KEY";
 	
+	@Autowired
+	private HazelcastInstance hazelCastInstance;
 	@Autowired
 	private SecurityUserDetailsService securityUserDetailsService;
 	
 	@PostConstruct
 	protected void init() {
-		secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-		
+		if( null == hazelCastInstance.getMap(SETTINGS_MAP).get(JWT_SHA_KEY) ) {
+			secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+			hazelCastInstance.getMap(SETTINGS_MAP).put(JWT_SHA_KEY, secretKey, 1, TimeUnit.DAYS);
+		} else {
+			secretKey = (SecretKey) hazelCastInstance.getMap(SETTINGS_MAP).get(JWT_SHA_KEY);
+		}
 	}
 	
 	public String createToken(String email, List<Role> roles) {
@@ -79,10 +88,10 @@ public class JwtTokenProvider {
 	
 	public String resolveToken(HttpServletRequest req) {
 		Enumeration<String> headerNames = req.getHeaderNames();
-		LOGGER.debug("Resolving headers");
+		log.debug("Resolving headers");
 		while(headerNames.hasMoreElements()) {
 			String headerName = headerNames.nextElement();
-			LOGGER.debug("Current header =>" +headerName);
+			log.debug("Current header =>" +headerName);
 			if(headerName.toLowerCase().equals("authorization")) {
 				String bearerToken =req.getHeader(headerName);
 				if ( bearerToken != null && bearerToken.startsWith("Bearer ") ) {
@@ -111,7 +120,7 @@ public class JwtTokenProvider {
 			
 			return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
 		} catch (JwtException | IllegalArgumentException | UsernameNotFoundException e) {
-			LOGGER.error("Token Invalid: " + e.getMessage());
+			log.error("Token Invalid: " + e.getMessage());
 			throw new InvalidTokenException(ERROR_CODES.INVALID_TOKEN);
 		}
 	}

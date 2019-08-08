@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -39,7 +40,8 @@ public interface UserAPI {
 			@ApiResponse(code=503, message="Under Maintenance", response=Error.class)
 	})
 	@ApiOperation(value="Service to get user profile.")
-	public ResponseEntity<User> profile(@ApiIgnore Principal loggedInUser);
+	public ResponseEntity<User> profile(@ApiIgnore Principal loggedInUser, 
+			@ApiIgnore @RequestHeader("Authorization") String authToken);
 	
 	@RequestMapping(path=CommonConstants.LOGIN_URL, method= RequestMethod.POST)
 	@ApiOperation(value="Service to help user login.")
@@ -53,7 +55,8 @@ public interface UserAPI {
 	
 	@ApiOperation(value="Service to help user logout.")
 	@RequestMapping(path=CommonConstants.LOGOUT_URL, method= RequestMethod.PATCH)
-	public ResponseEntity<?> logout(@ApiIgnore Principal loggedInUser);
+	public ResponseEntity<?> logout(@ApiIgnore Principal loggedInUser,
+			@ApiIgnore @RequestHeader("Authorization") String authToken);
 	
 	@ApiOperation(value="Service to help user validation.")
 	@RequestMapping(path="/profile/validate", method= RequestMethod.GET)

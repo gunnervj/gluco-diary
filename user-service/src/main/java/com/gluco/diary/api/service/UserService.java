@@ -2,16 +2,12 @@ package com.gluco.diary.api.service;
 
 import java.security.Principal;
 import java.util.Arrays;
-import java.util.concurrent.CompletableFuture;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import com.gluco.diary.api.constants.CommonConstants;
 import com.gluco.diary.api.constants.ERROR_CODES;
 import com.gluco.diary.api.constants.Role;
 import com.gluco.diary.api.domain.LoginRequest;
@@ -20,23 +16,31 @@ import com.gluco.diary.api.exceptions.AlreadyExistException;
 import com.gluco.diary.api.exceptions.InvalidTokenException;
 import com.gluco.diary.api.exceptions.UnknownException;
 import com.gluco.diary.api.exceptions.ValidationException;
+import com.gluco.diary.api.repository.UserAuthTokenRepository;
 import com.gluco.diary.api.repository.UserRepository;
 import com.gluco.diary.api.repository.models.UserDTO;
 import com.gluco.diary.api.security.JwtTokenProvider;
 import com.mongodb.MongoWriteException;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class UserService implements IUserService{
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class.getName());
 	private UserRepository userRepository;
 	private PasswordEncoder passwordEncoder;
 	private JwtTokenProvider jwtTokenProvider;
+	private UserAuthTokenRepository userAuthTokenRepository;
 	
 	@Autowired
-	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
+	public UserService(UserRepository userRepository, 
+			PasswordEncoder passwordEncoder, 
+			JwtTokenProvider jwtTokenProvider,
+			UserAuthTokenRepository userAuthTokenRepository ) {
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.jwtTokenProvider = jwtTokenProvider;
+		this.userAuthTokenRepository = userAuthTokenRepository;
 	}
 	
 	@Override
@@ -45,7 +49,7 @@ public class UserService implements IUserService{
 			
 			UserDTO existingUser = userRepository.findByEmail(user.getEmail());
 			if (null == existingUser) {
-				LOGGER.info("User does not exist. Creating one.");
+				log.info("User does not exist. Creating one.");
 				user.setPassword(passwordEncoder.encode(user.getPassword()));
 				
 				UserDTO userDto = new UserDTO();
@@ -57,20 +61,18 @@ public class UserService implements IUserService{
 				
 				userDto.setRoles(Arrays.asList(new Role[] { Role.ROLE_FREE_USER }));
 				createUserInDataBase(userDto);
-								
-				LOGGER.info("User Created =" + userDto.getId());
 			} else {
 				throw new AlreadyExistException(ERROR_CODES.USER_ALREADY_EXISTS);
 			}
 		} catch (MongoWriteException | org.springframework.dao.DuplicateKeyException ex) {
-			LOGGER.error("Unknown Error while creating profile. Duplicate Key: " + ex.getMessage(), ex);
+			log.error("Unknown Error while creating profile. Duplicate Key: " + ex.getMessage(), ex);
 			if(ex.getMessage().toLowerCase().contains("email"))
 				throw new ValidationException(ERROR_CODES.INVALID_EMAIL);
 		} catch (AlreadyExistException ex) {
-			LOGGER.error("User already exist :" + user.toString());
+			log.error("User already exist :" + user.toString());
 			throw ex;
 		}catch (Exception ex) {
-			LOGGER.error("Error while saving user. Error :" + ex.getMessage(), ex);
+			log.error("Error while saving user. Error :" + ex.getMessage(), ex);
 			throw new UnknownException(ERROR_CODES.UNDER_MAINTENANCE);
 		}
 		
@@ -82,18 +84,19 @@ public class UserService implements IUserService{
 	}
 	
 	@Override
-	public User getProfile(Principal loggedInUser) {
+	public User getProfile(Principal loggedInUser, String authToken) {
 		UserDTO existingUser = userRepository.findByEmail(loggedInUser.getName());
 		if( existingUser == null ) {
 			throw new InvalidTokenException(ERROR_CODES.INVALID_LOGIN);
 		}
+		userAuthTokenRepository.removeToken(authToken);
+		userAuthTokenRepository.addToken(authToken, existingUser);
 		return transformUser(existingUser);
 	}
 
 	@Override
 	public String login(LoginRequest request)  throws ValidationException {
 		String token = "";
-		System.out.println("Log in request recieved");
 		try {
 			UserDTO existingUser = userRepository.findByEmail(request.getEmail());
 				
@@ -103,45 +106,26 @@ public class UserService implements IUserService{
 			
 			if(!CollectionUtils.isEmpty(existingUser.getRoles())) {
 				token = jwtTokenProvider.createToken(existingUser.getEmail(), existingUser.getRoles());
-			}		
-			
-			existingUser.setToken(token);
-			CompletableFuture.runAsync(() -> {
-				try {
-					userRepository.save(existingUser);
-					LOGGER.info("Updated token to database");
-				} catch(Exception ex) {
-					LOGGER.error("Error while updating token to Database: Error :" + ex.getMessage());
-				}
-			});
+			}	
+			userAuthTokenRepository.addToken(token, existingUser);
+			log.info("User login succesful.Added token");
 		} catch (ValidationException ex) {
-			LOGGER.debug("ValidationException while logging-in. Email :" + request.getEmail() );
+			log.debug("ValidationException while logging-in. Email :" + request.getEmail() );
 			throw ex;
 		} catch (Exception ex) {
-			LOGGER.error("Unknown Error while logging in. Email :" + request.getEmail() + " || Error :" + ex.getMessage(), ex);
+			log.error("Unknown Error while logging in. Email :" + request.getEmail() + " || Error :" + ex.getMessage(), ex);
 			throw new UnknownException(ERROR_CODES.UNDER_MAINTENANCE);
 		}
-			System.out.println("TOKEN =>" + token);
 		return token;
 	}
 
 	@Override
-	public Boolean logout(Principal loggedInUser) {
-		UserDTO existingUser = userRepository.findByEmail(loggedInUser.getName());
-		
-		if( existingUser == null ) {
-			throw new InvalidTokenException(ERROR_CODES.INVALID_TOKEN);
-		}
+	public Boolean logout(Principal loggedInUser, String authToken) {
 		
 		try {
-			existingUser.setToken(CommonConstants.EMPTY_STRING);
-			userRepository.save(existingUser);
-		} catch (MongoWriteException | org.springframework.dao.DuplicateKeyException ex) {
-			LOGGER.error("Unknown Error while updating profile. Duplicate Key: " + ex.getMessage(), ex);
-			if(ex.getMessage().toLowerCase().contains("email"))
-				throw new ValidationException(ERROR_CODES.INVALID_EMAIL);
+			userAuthTokenRepository.removeToken(authToken);
 		} catch (Exception ex) {
-			LOGGER.error("Unknown Error while logging out. Exception: " + ex.getMessage(), ex);
+			log.error("Unknown Error while logging out. Exception: " + ex.getMessage(), ex);
 			throw new UnknownException(ERROR_CODES.UNDER_MAINTENANCE);
 		}
 		

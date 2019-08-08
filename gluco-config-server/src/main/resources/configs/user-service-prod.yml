@@ -11,10 +11,17 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://glregistryserver:7777/eureka
+
+token: 
+  validity: 3600000
+  idle: 
+    validity: 50000
+
+hazelcast:
+  mgmt:
+    cent:
+      url: http://mancenter:8080/hazelcast-mancenter/
       
 logging:
   level:
     com.gluco.diary: info
-    
-token: 
-  validity: 3600000
