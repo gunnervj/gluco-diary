@@ -104,6 +104,8 @@ Many of the passwords and settings are configured via environment variable. Henc
 * GLUCODB_USER=<Add>
 * GL_KEY_PASSWORD=<Add [ This is your keystore password generated before ]
 * CONFIG_SERVICE_PASSWORD=<Add> [ This is the password your spring config service will use to secure itself.]
+* HZ_CAST_MGMGT_PASSWORD
+* HZ_CAST_MGMGT_USER
 
 
 ### Run Maven
